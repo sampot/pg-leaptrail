@@ -32,123 +32,183 @@ export function drawTraveler(ctx, p) {
   ctx.save();
   ctx.translate(cx, 0);
   ctx.scale(facing, 1);
+  // Slight upscale so details read on the 480 canvas
+  ctx.translate(0, feet);
+  ctx.scale(1.12, 1.12);
+  ctx.translate(0, -feet);
 
   // Soft contact shadow
-  ctx.fillStyle = "rgba(0,0,0,0.18)";
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
   ctx.beginPath();
-  ctx.ellipse(0, feet - 1, 11, 3.2, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, feet - 1, 12, 3.4, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  // Scarf trail
-  const scarf = ctx.createLinearGradient(-4, headY, 18, headY + 16);
-  scarf.addColorStop(0, "#f97316");
+  // Scarf trail (behind body)
+  const scarf = ctx.createLinearGradient(-4, headY, 20, headY + 18);
+  scarf.addColorStop(0, "#ea580c");
+  scarf.addColorStop(0.5, "#fb923c");
   scarf.addColorStop(1, "#fdba74");
   ctx.strokeStyle = scarf;
-  ctx.lineWidth = 3.2;
+  ctx.lineWidth = 3.6;
   ctx.lineCap = "round";
+  const scarfWave = air ? Math.max(-8, -p.vy * 0.55) : Math.sin(phase * 6) * 2.4;
   ctx.beginPath();
-  const scarfWave = air ? -p.vy * 0.4 : Math.sin(phase * 6) * 2;
-  ctx.moveTo(4, headY + 4);
-  ctx.quadraticCurveTo(12 + scarfWave, headY + 10, 16 + scarfWave * 1.2, headY + 18);
+  ctx.moveTo(5, headY + 5);
+  ctx.quadraticCurveTo(14 + scarfWave, headY + 11, 18 + scarfWave * 1.3, headY + 20);
   ctx.stroke();
+  ctx.lineWidth = 2.6;
   ctx.beginPath();
-  ctx.moveTo(3, headY + 6);
-  ctx.quadraticCurveTo(10 + scarfWave * 0.6, headY + 14, 13, headY + 20);
+  ctx.moveTo(4, headY + 7);
+  ctx.quadraticCurveTo(12 + scarfWave * 0.7, headY + 15, 15, headY + 22);
   ctx.stroke();
 
   // Boots / legs
-  ctx.fillStyle = "#292524";
-  roundCapsule(ctx, -7 - legSwing * 0.15, feet - 10, 6, 10, 2);
+  ctx.fillStyle = "#1c1917";
+  roundCapsule(ctx, -7.5 - legSwing * 0.2, feet - 11, 6.5, 11, 2.5);
   ctx.fill();
-  roundCapsule(ctx, 1 + legSwing * 0.15, feet - 10, 6, 10, 2);
+  roundCapsule(ctx, 1.2 + legSwing * 0.2, feet - 11, 6.5, 11, 2.5);
   ctx.fill();
-  // Boot toes
+  ctx.strokeStyle = "rgba(0,0,0,0.35)";
+  ctx.lineWidth = 1;
+  roundCapsule(ctx, -7.5 - legSwing * 0.2, feet - 11, 6.5, 11, 2.5);
+  ctx.stroke();
+  roundCapsule(ctx, 1.2 + legSwing * 0.2, feet - 11, 6.5, 11, 2.5);
+  ctx.stroke();
+  // Boot toes + sole highlight
   ctx.fillStyle = "#44403c";
   ctx.beginPath();
-  ctx.ellipse(-4 - legSwing * 0.15, feet - 1.5, 4.2, 2.2, 0, 0, Math.PI * 2);
-  ctx.ellipse(4 + legSwing * 0.15, feet - 1.5, 4.2, 2.2, 0, 0, Math.PI * 2);
+  ctx.ellipse(-4 - legSwing * 0.2, feet - 1.2, 4.6, 2.3, 0, 0, Math.PI * 2);
+  ctx.ellipse(4.5 + legSwing * 0.2, feet - 1.2, 4.6, 2.3, 0, 0, Math.PI * 2);
   ctx.fill();
+  ctx.fillStyle = "rgba(253,224,71,0.35)";
+  ctx.fillRect(-6.5 - legSwing * 0.2, feet - 5, 5, 1.2);
+  ctx.fillRect(2.5 + legSwing * 0.2, feet - 5, 5, 1.2);
 
   // Tunic body
-  const tunic = ctx.createLinearGradient(-10, bodyY - 12, 10, bodyY + 8);
-  tunic.addColorStop(0, "#2dd4bf");
-  tunic.addColorStop(0.55, "#0f766e");
-  tunic.addColorStop(1, "#115e59");
+  const tunic = ctx.createLinearGradient(-10, bodyY - 14, 12, bodyY + 10);
+  tunic.addColorStop(0, "#5eead4");
+  tunic.addColorStop(0.4, "#14b8a6");
+  tunic.addColorStop(1, "#0f766e");
   ctx.fillStyle = tunic;
-  roundCapsule(ctx, -9, bodyY - 12, 18, 20, 7);
+  roundCapsule(ctx, -10, bodyY - 13, 20, 22, 8);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(15,23,42,0.35)";
+  ctx.lineWidth = 1.2;
+  roundCapsule(ctx, -10, bodyY - 13, 20, 22, 8);
+  ctx.stroke();
+  // Collar
+  ctx.fillStyle = "#99f6e4";
+  ctx.beginPath();
+  ctx.moveTo(-6, bodyY - 12);
+  ctx.quadraticCurveTo(0, bodyY - 8, 6, bodyY - 12);
+  ctx.quadraticCurveTo(0, bodyY - 15, -6, bodyY - 12);
   ctx.fill();
 
-  // Belt
+  // Belt + buckle
   ctx.fillStyle = "#78350f";
-  ctx.fillRect(-8, bodyY - 1, 16, 3.5);
+  ctx.fillRect(-8.5, bodyY - 0.5, 17, 4);
   ctx.fillStyle = "#fbbf24";
-  roundRectPath(ctx, -2, bodyY - 1.5, 4, 4.5, 1);
+  roundRectPath(ctx, -2.5, bodyY - 1.2, 5, 5, 1.2);
   ctx.fill();
+  ctx.strokeStyle = "#a16207";
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
 
   // Arm
-  ctx.strokeStyle = "#5eead4";
-  ctx.lineWidth = 3.5;
+  ctx.strokeStyle = "#2dd4bf";
+  ctx.lineWidth = 4;
   ctx.lineCap = "round";
   ctx.beginPath();
-  const armSwing = run ? Math.sin(phase * Math.PI * 2 + Math.PI) * 4 : air ? -6 : 0;
-  ctx.moveTo(6, bodyY - 8);
-  ctx.quadraticCurveTo(11, bodyY - 2 + armSwing * 0.3, 10, bodyY + 4 + armSwing * 0.2);
+  const armSwing = run ? Math.sin(phase * Math.PI * 2 + Math.PI) * 4.5 : air ? -7 : 1;
+  ctx.moveTo(7, bodyY - 9);
+  ctx.quadraticCurveTo(12, bodyY - 2 + armSwing * 0.3, 11, bodyY + 5 + armSwing * 0.2);
   ctx.stroke();
   // Glove
-  ctx.fillStyle = "#fef3c7";
+  const gx = 11;
+  const gy = bodyY + 5 + armSwing * 0.2;
+  ctx.fillStyle = "#fff7ed";
   ctx.beginPath();
-  ctx.arc(10, bodyY + 4 + armSwing * 0.2, 2.8, 0, Math.PI * 2);
+  ctx.arc(gx, gy, 3.2, 0, Math.PI * 2);
   ctx.fill();
+  ctx.strokeStyle = "rgba(120,53,15,0.35)";
+  ctx.lineWidth = 1;
+  ctx.stroke();
 
   // Head
-  const skin = ctx.createRadialGradient(-2, headY - 2, 1, 0, headY, 11);
-  skin.addColorStop(0, "#ffe8d6");
-  skin.addColorStop(1, "#f0b090");
+  const skin = ctx.createRadialGradient(-3, headY - 3, 1, 0, headY, 12);
+  skin.addColorStop(0, "#fff1e6");
+  skin.addColorStop(0.65, "#f5c9a8");
+  skin.addColorStop(1, "#e8a57d");
   ctx.fillStyle = skin;
   ctx.beginPath();
-  ctx.ellipse(0, headY, 9.5, 10, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, headY, 10.2, 10.8, 0, 0, Math.PI * 2);
   ctx.fill();
+  ctx.strokeStyle = "rgba(120,53,15,0.28)";
+  ctx.lineWidth = 1.1;
+  ctx.stroke();
 
   // Hair / cap
-  const hair = ctx.createLinearGradient(-8, headY - 12, 8, headY);
-  hair.addColorStop(0, "#1e3a5f");
+  const hair = ctx.createLinearGradient(-9, headY - 14, 9, headY + 2);
+  hair.addColorStop(0, "#164e63");
   hair.addColorStop(1, "#0f766e");
   ctx.fillStyle = hair;
   ctx.beginPath();
-  ctx.ellipse(0, headY - 5, 10, 7.5, 0, Math.PI, 0);
+  ctx.ellipse(0, headY - 5.5, 10.8, 8, 0, Math.PI + 0.15, -0.15);
   ctx.fill();
+  // Side lock
   ctx.beginPath();
-  ctx.moveTo(-9, headY - 2);
-  ctx.quadraticCurveTo(-12, headY + 4, -6, headY + 2);
+  ctx.moveTo(-9.5, headY - 2);
+  ctx.quadraticCurveTo(-13, headY + 5, -7, headY + 3);
+  ctx.quadraticCurveTo(-9, headY + 1, -9.5, headY - 2);
   ctx.fill();
 
-  // Cap brim
+  // Cap brim + badge
   ctx.fillStyle = "#fbbf24";
   ctx.beginPath();
-  ctx.ellipse(3, headY - 6, 7, 2.2, -0.2, 0, Math.PI * 2);
+  ctx.ellipse(3.5, headY - 6.5, 7.5, 2.4, -0.15, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#fef08a";
+  ctx.beginPath();
+  ctx.arc(1, headY - 9, 2.2, 0, Math.PI * 2);
   ctx.fill();
 
-  // Eyes
-  ctx.fillStyle = "#1c1917";
+  // Eyes with lids
+  ctx.fillStyle = "#fff";
   ctx.beginPath();
-  ctx.ellipse(2.5, headY - 0.5, 1.7, 2.1, 0, 0, Math.PI * 2);
-  ctx.ellipse(6.2, headY - 0.5, 1.7, 2.1, 0, 0, Math.PI * 2);
+  ctx.ellipse(2.8, headY - 0.2, 2.3, 2.6, 0, 0, Math.PI * 2);
+  ctx.ellipse(7, headY - 0.2, 2.3, 2.6, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#0f172a";
+  ctx.beginPath();
+  ctx.ellipse(3.2, headY - 0.1, 1.35, 1.8, 0, 0, Math.PI * 2);
+  ctx.ellipse(7.4, headY - 0.1, 1.35, 1.8, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = "#fff";
   ctx.beginPath();
-  ctx.arc(3.1, headY - 1.2, 0.7, 0, Math.PI * 2);
-  ctx.arc(6.8, headY - 1.2, 0.7, 0, Math.PI * 2);
+  ctx.arc(3.6, headY - 0.8, 0.55, 0, Math.PI * 2);
+  ctx.arc(7.8, headY - 0.8, 0.55, 0, Math.PI * 2);
   ctx.fill();
 
-  // Cheek + smile
-  ctx.fillStyle = "rgba(251,113,133,0.45)";
+  // Brow
+  ctx.strokeStyle = "#134e4a";
+  ctx.lineWidth = 1.3;
+  ctx.lineCap = "round";
   ctx.beginPath();
-  ctx.ellipse(7.5, headY + 2.5, 2.2, 1.3, 0, 0, Math.PI * 2);
+  ctx.moveTo(1.2, headY - 3.2);
+  ctx.lineTo(4.4, headY - 3.6);
+  ctx.moveTo(5.6, headY - 3.6);
+  ctx.lineTo(8.8, headY - 3.2);
+  ctx.stroke();
+
+  // Cheek + smile
+  ctx.fillStyle = "rgba(251,113,133,0.5)";
+  ctx.beginPath();
+  ctx.ellipse(8.2, headY + 2.8, 2.4, 1.4, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.strokeStyle = "#9a3412";
-  ctx.lineWidth = 1.2;
+  ctx.lineWidth = 1.35;
   ctx.beginPath();
-  ctx.arc(4.5, headY + 3.5, 2.8, 0.15, Math.PI - 0.15);
+  ctx.arc(5, headY + 3.8, 3, 0.2, Math.PI - 0.2);
   ctx.stroke();
 
   ctx.restore();

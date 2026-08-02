@@ -133,8 +133,8 @@ export class LeaptrailGame {
     this.player = {
       x: src.spawn.x,
       y: src.spawn.y,
-      w: 26,
-      h: 34,
+      w: 28,
+      h: 36,
       vx: 0,
       vy: 0,
       onGround: false,
