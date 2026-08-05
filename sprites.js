@@ -236,56 +236,75 @@ export function drawFoe(ctx, f, t) {
   ctx.fill();
 
   // Body shell
-  const shell = ctx.createRadialGradient(-4, -4, 2, 0, 0, 16);
+  const shell = ctx.createRadialGradient(-5, -5, 2, 0, 0, 17);
   shell.addColorStop(0, "#fda4af");
-  shell.addColorStop(0.5, "#e11d48");
+  shell.addColorStop(0.45, "#f43f5e");
   shell.addColorStop(1, "#9f1239");
   ctx.fillStyle = shell;
   ctx.beginPath();
-  ctx.ellipse(0, 1, 13, 10, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 1, 14, 11, 0, 0, Math.PI * 2);
   ctx.fill();
+  ctx.strokeStyle = "rgba(76,5,25,0.45)";
+  ctx.lineWidth = 1.3;
+  ctx.stroke();
 
-  // Shell ridges
-  ctx.strokeStyle = "rgba(255,255,255,0.25)";
-  ctx.lineWidth = 1.4;
+  // Shell ridges + gloss
+  ctx.strokeStyle = "rgba(255,255,255,0.3)";
+  ctx.lineWidth = 1.5;
   for (let i = -1; i <= 1; i++) {
     ctx.beginPath();
-    ctx.ellipse(i * 4, 0, 3.5, 7, 0, 0, Math.PI * 2);
+    ctx.ellipse(i * 4.5, 0, 3.8, 7.5, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
+  ctx.fillStyle = "rgba(255,255,255,0.22)";
+  ctx.beginPath();
+  ctx.ellipse(-4, -4, 4, 2.2, -0.5, 0, Math.PI * 2);
+  ctx.fill();
 
   // Feet
   ctx.fillStyle = "#881337";
-  for (const fx of [-8, -3, 3, 8]) {
+  for (const fx of [-9, -3, 3, 9]) {
     ctx.beginPath();
-    ctx.ellipse(fx, 9, 2.4, 2.8, 0, 0, Math.PI * 2);
+    ctx.ellipse(fx, 10, 2.6, 3, 0, 0, Math.PI * 2);
     ctx.fill();
   }
 
   // Face plate
-  ctx.fillStyle = "#ffe4e6";
+  const face = ctx.createRadialGradient(1, 0, 1, 2, 1, 8);
+  face.addColorStop(0, "#fff1f2");
+  face.addColorStop(1, "#fecdd3");
+  ctx.fillStyle = face;
   ctx.beginPath();
-  ctx.ellipse(2, 1, 6.5, 5.5, 0, 0, Math.PI * 2);
+  ctx.ellipse(2, 1, 7, 6, 0, 0, Math.PI * 2);
   ctx.fill();
+  ctx.strokeStyle = "rgba(159,18,57,0.35)";
+  ctx.lineWidth = 1;
+  ctx.stroke();
 
-  // Eyes (grumpy)
-  ctx.fillStyle = "#1c1917";
+  // Eyes (grumpy) with sclera
+  ctx.fillStyle = "#fff";
   ctx.beginPath();
-  ctx.ellipse(0.5, 0, 1.5, 2, 0, 0, Math.PI * 2);
-  ctx.ellipse(4.5, 0, 1.5, 2, 0, 0, Math.PI * 2);
+  ctx.ellipse(0.2, 0.2, 2.1, 2.4, 0, 0, Math.PI * 2);
+  ctx.ellipse(4.6, 0.2, 2.1, 2.4, 0, 0, Math.PI * 2);
   ctx.fill();
-  ctx.strokeStyle = "#1c1917";
-  ctx.lineWidth = 1.2;
+  ctx.fillStyle = "#0f172a";
   ctx.beginPath();
-  ctx.moveTo(-1.2, -2.5);
-  ctx.lineTo(1.5, -1.2);
-  ctx.moveTo(6.2, -2.5);
-  ctx.lineTo(3.5, -1.2);
+  ctx.ellipse(0.6, 0.4, 1.2, 1.6, 0, 0, Math.PI * 2);
+  ctx.ellipse(5, 0.4, 1.2, 1.6, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = "#0f172a";
+  ctx.lineWidth = 1.35;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(-1.5, -2.8);
+  ctx.lineTo(1.8, -1.4);
+  ctx.moveTo(6.5, -2.8);
+  ctx.lineTo(3.2, -1.4);
   ctx.stroke();
 
   // Mouth
   ctx.beginPath();
-  ctx.arc(2.5, 2.8, 2.2, 0.2, Math.PI - 0.2, true);
+  ctx.arc(2.5, 3.2, 2.4, 0.25, Math.PI - 0.25, true);
   ctx.stroke();
 
   ctx.restore();

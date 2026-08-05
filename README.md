@@ -4,14 +4,14 @@
 
 名稱、關卡與角色為原創小品，致敬「平台跳躍」玩法類型，非任一商業作品復刻。
 
-也可當作 [Playgrounds（遊樂場）](https://samkuo.me/playgrounds/) 的 **SAM**（`index.html` 入口）。手感或關卡想再磨？開進來玩，再叫 AI 幫你改一版。
+也可當作 [Playgrounds（遊樂場）](https://play.samkuo.me/) 的 **SAM**（`index.html` 入口）。手感或關卡想再磨？開進來玩，再叫 AI 幫你改一版。
 
 ## 一鍵開 SAM 小
 
-**[一鍵開 SAM 小](https://samkuo.me/playgrounds/?open=sampot%2Fpg-leaptrail&name=%E8%BA%8D%E9%9A%8E%E6%97%85%E4%BA%BA)**
+**[一鍵開 SAM 小](https://play.samkuo.me/?open=sampot%2Fpg-leaptrail&name=%E8%BA%8D%E9%9A%8E%E6%97%85%E4%BA%BA)**
 
 ```
-https://samkuo.me/playgrounds/?open=sampot/pg-leaptrail&name=躍階旅人
+https://play.samkuo.me/?open=sampot/pg-leaptrail&name=躍階旅人
 ```
 
 同源會重用本機已匯入的沙盒；要強制新建可加 `&fresh=1`。
